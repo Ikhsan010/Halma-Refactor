@@ -40,8 +40,9 @@ public class driver {
         // System.out.println(b.getPlayer1().isWin(q));
         while(!b.getPlayer1().isWin(q) && !b.getPlayer2().isWin(p)){
             b.writeInfo();
+
+            // Player 1 main phase
             if(b.getPlayer1().getPlayerState()){
-                // Player 1 turn
                 System.out.println("\nGiliran pemain pertama");
                 System.out.println("Masukkan koordinat pion ");
                 do {
@@ -55,25 +56,53 @@ public class driver {
                 } while (!b.getPlayer1().isPionExist(pion));
                 System.out.println("Masukkan koordinat tujuan");
                 int idxpion = b.getPlayer1().indexOfPion(pion);
-                // Perlu dibuat fungsi yang mengkonfirmasi apakah tujuan
-                // pion merupakan koordinat yang valid atau tidak
-                // ASUMSIKAN SAAT INI MASUKAN VALID (TESTING ONLY)
-                // do {
+                do {
                     x = sc.nextInt();
                     y = sc.next();
                     destinasi = new Koordinat(x, y);
-                    // if(!b.isValidMovement(pion, destinasi)){
-                    //     System.out.println("Destinasi tidak terdefinisi!");
-                    //     System.out.println("Masukkan destinasi baru");
-                    // }
-                // } while (!b.isValidMovement(pion, destinasi));
-                // System.out.println(b.canJumpOverPion(pion, destinasi));
+                    if(!b.isValidMovement(pion, destinasi)){
+                        System.out.println("Destinasi tidak terdefinisi!");
+                        System.out.println("Masukkan destinasi baru");
+                    }
+                } while (!b.isValidMovement(pion, destinasi));
                 b.getPlayer1().getPlayerPion().set(idxpion, destinasi);
-                System.out.println("Berhasil memindahkan pion! Yeyy");
             }
+
+            // Player 2 main phase
             if(b.getPlayer2().getPlayerState()){
-                // Player 2 turn
-                System.out.println("Giliran pemain kedua");
+                System.out.println("\nGiliran pemain kedua");
+                System.out.println("Masukkan koordinat pion ");
+                do {
+                    absis = sc.nextInt();
+                    ordinat = sc.next();
+                    pion = new Koordinat(absis, ordinat);
+                    if(!b.getPlayer2().isPionExist(pion)){
+                        System.out.println("Pion tidak ditemukan!");
+                        System.out.println("Masukkan koordinat pion yang baru");
+                    }
+                } while (!b.getPlayer2().isPionExist(pion));
+                System.out.println("Masukkan koordinat tujuan");
+                int idxpion = b.getPlayer2().indexOfPion(pion);
+                do {
+                    x = sc.nextInt();
+                    y = sc.next();
+                    destinasi = new Koordinat(x, y);
+                    if(!b.isValidMovement(pion, destinasi)){
+                        System.out.println("Destinasi tidak terdefinisi!");
+                        System.out.println("Masukkan destinasi baru");
+                    }
+                } while (!b.isValidMovement(pion, destinasi));
+                b.getPlayer2().getPlayerPion().set(idxpion, destinasi);
+            }
+
+            // Pergantian pemain
+            if(b.getPlayer1().getPlayerState()){
+                b.getPlayer1().setPlayerState(false);
+                b.getPlayer2().setPlayerState(true);
+            }
+            else{
+                b.getPlayer1().setPlayerState(true);
+                b.getPlayer2().setPlayerState(false);
             }
 
             // Fungsi kemenangan
@@ -81,9 +110,11 @@ public class driver {
             if(b.getPlayer1().isWin(q)){
                 System.out.println("Player 1 menang!");
             }
-            if(b.getPlayer2().isWin(p));
+            if(b.getPlayer2().isWin(p)){
+                System.out.println("Player 2 menang!");
+            };
         }
-
+        b.writeBoard();
         sc.close();
     }
 }

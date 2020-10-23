@@ -201,6 +201,15 @@ public class Board {
         pion.isMovingToWest(destinasi) || pion.isMovingToNorthWest(destinasi));
     }
 
+    /*
+    Mengembalikan true jika pion dapat menuju destinasi dengan cara melompati
+    pion yang berada diantara koordinat pion dengan koordinat destinasi
+    Ide: Cek apakah terdapat pion (sendiri atau musuh) yang berada diantara
+    koordinat pion dengan koordinat destinasi. Jika ditemukan sebuah pion maka
+    destinasi dapat dituju
+    @param pion --> pion yang dipilih
+    @param destinasi --> destinasi yang dituju
+    */
     public boolean canJumpOverPion(Koordinat pion, Koordinat destinasi){
         Player p1 = this.getPlayer1();
         Player p2 = this.getPlayer2();
