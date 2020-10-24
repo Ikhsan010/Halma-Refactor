@@ -2,28 +2,28 @@ public class Koordinat{
     private int x;
     private String y;
 
-    /*
+    /**
     Konstruktor pembentuk Koordinat
     @param x --> absis koordinat
     @param y --> ordinat koordinat
-    */
+    **/
     public Koordinat(int x, String y){
         this.x = x;
         this.y = y;
     }
 
-    /*
+    /**
     Getter absis koordinat
     @return --> integer
-    */
+    **/
     public int getAbsis(){
         return this.x;
     }
 
-    /*
+    /**
     Getter ordinat koordinat
     @return --> String
-    */
+    **/
     public String getOrdinat(){
         return this.y;
     }

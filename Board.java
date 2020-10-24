@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Board {
     private Player player1, player2;
@@ -240,13 +241,197 @@ public class Board {
         return false;
     }
 
-    /*
+    /**
     Mengembalikan true jika tidak ada pion pada koordinat destinasi
     @param destinasi --> koordinat destinasi yang akan dituju
-    */
+    **/
     public boolean noPionAtDestinasi(Koordinat destinasi){
         return
         (!this.getPlayer1().isPionExist(destinasi) &&
         !this.getPlayer2().isPionExist(destinasi));
+    }
+
+    /***** HEURISTIC APPROACH *****/
+    // 1. Butuh fungsi yang dapat menentukan pion mana yang memiliki gerakan paling banyak
+    // 2. Setelah pion telah ditentukan, butuh fungsi yang dapat memetakan "possible moves"
+    // 3. ...?
+    // PERLU FUNGSI UNTUK MENGHITUNG NILAI DARI SUATU STATE BOARD
+
+    /**
+    Menghitung heuristic pion yang dipilih
+    Mungkin idenya seperti menghitung nilai kebebasan dari
+    pion yang dipilih. Semakin banyak koordinat yang mampu dicapai
+    oleh pion, maka semakin bebas pion tersebut bergerak.
+    NAMUN, nanti pada implementasinya, akan dipilih pion yang
+    memiliki kebebesan bergerak PALING KECIL/PALING BANYAK?????
+    @param pion --> koordinat pion yang dipilih
+    @return --> pion's freedom point
+    **/
+    public int countFreedomPion(Koordinat pion){
+        int point = 0;
+
+        // Jika pion milik player 1
+        // Untuk player 1 gunakan hanya gerakan east, southeast, south
+        // dan juga gerakan melompat east, southeast, south
+        if(this.getPlayer1().isPionExist(pion)){
+            if(this.isValidMovement(pion, pion.east())){
+                point++;
+            }
+            if(this.isValidMovement(pion, pion.southEast())){
+                point += 2;
+            }
+            if(this.isValidMovement(pion, pion.south())){
+                point++;
+            }
+            if(this.isValidMovement(pion, pion.jumpToEast())){
+                point += 2;
+            }
+            if(this.isValidMovement(pion, pion.jumpToSouthEast())){
+                point += 4;
+            }
+            if(this.isValidMovement(pion, pion.jumpToSouth())){
+                point += 2;
+            }
+        }
+
+        // Jika pion milik player 2
+        // Gunakan hanya untuk gerakan west, northwest, north
+        // dan juga gerakan melompat west, northwest, north
+        if(this.getPlayer2().isPionExist(pion)){
+            if(this.isValidMovement(pion, pion.west())){
+                point++;
+            }
+            if(this.isValidMovement(pion, pion.northWest())){
+                point += 2;
+            }
+            if(this.isValidMovement(pion, pion.north())){
+                point++;
+            }
+            if(this.isValidMovement(pion, pion.jumpToWest())){
+                point += 2;
+            }
+            if(this.isValidMovement(pion, pion.jumpToNorthWest())){
+                point += 4;
+            }
+            if(this.isValidMovement(pion, pion.jumpToNorth())){
+                point += 2;
+            }
+        }
+
+        return point;
+    }
+
+    /**** RANDOM MOVES ALGORITHM *****/
+
+    /**
+    Mengembalikan true jika pion yang dipilih sudah berada pada
+    base musuh. ASUMSI pion merupakan milik salah satu dari player
+    @param pion --> Koordinat pion yang dipilih
+    **/
+    public boolean isInsideEnemyBase(Koordinat pion){
+        boolean found = false;
+        int i = 0;
+        // Cek milik siapa pion yang dimasukkan
+        // Jika pion milik player 1
+        if(this.getPlayer1().isPionExist(pion)){
+            while(!found && i < this.getPlayer2().getPlayerBase().size()){
+                if(pion.isKoordinatEQ(this.getPlayer2().getPlayerBase().get(i))){
+                    found = true;
+                }
+                else{
+                    i++;
+                }
+            }
+            return found;
+        }
+        if(this.getPlayer2().isPionExist(pion)){
+            while(!found && i < this.getPlayer1().getPlayerBase().size()){
+                if(pion.isKoordinatEQ(this.getPlayer1().getPlayerBase().get(i))){
+                    found = true;
+                }
+                else{
+                    i++;
+                }
+            }
+            return found;
+        }
+        return false;
+    }
+
+    /**
+    Mengembalikan list koordinat destinasi yang dapat dipilih oleh pion
+    @param pion --> koordinat pion yang dipilih
+    @return list of possible move from pion
+    **/
+    public List<Koordinat> possibleMoveOfPion(Koordinat pion){
+        List<Koordinat> result = new ArrayList<Koordinat>();
+        if(isValidMovement(pion, pion.north())){
+            result.add(pion.north());
+        }
+        if(isValidMovement(pion, pion.northEast())){
+            result.add(pion.northEast());
+        }
+        if(isValidMovement(pion, pion.east())){
+            result.add(pion.east());
+        }
+        if(isValidMovement(pion, pion.southEast())){
+            result.add(pion.southEast());
+        }
+        if(isValidMovement(pion, pion.south())){
+            result.add(pion.south());
+        }
+        if(isValidMovement(pion, pion.southWest())){
+            result.add(pion.southWest());
+        }
+        if(isValidMovement(pion, pion.west())){
+            result.add(pion.west());
+        }
+        if(isValidMovement(pion, pion.northWest())){
+            result.add(pion.northWest());
+        }
+
+        if(isValidMovement(pion, pion.jumpToNorth())){
+            result.add(pion.jumpToNorth());
+        }
+        if(isValidMovement(pion, pion.jumpToNorthEast())){
+            result.add(pion.jumpToNorthEast());
+        }
+        if(isValidMovement(pion, pion.jumpToEast())){
+            result.add(pion.jumpToEast());
+        }
+        if(isValidMovement(pion, pion.jumpToSouthEast())){
+            result.add(pion.jumpToSouthEast());
+        }
+        if(isValidMovement(pion, pion.jumpToSouth())){
+            result.add(pion.jumpToSouth());
+        }
+        if(isValidMovement(pion, pion.jumpToSouthWest())){
+            result.add(pion.jumpToSouthWest());
+        }
+        if(isValidMovement(pion, pion.jumpToWest())){
+            result.add(pion.jumpToWest());
+        }
+        if(isValidMovement(pion, pion.jumpToNorthWest())){
+            result.add(pion.jumpToNorthWest());
+        }
+        return result;
+    }
+
+    /**
+    @param randomPion --> pion yang dipilih untuk bergerak
+    @return destinasi koordinat yang dituju
+    **/
+    public Koordinat moveRandomly(Koordinat randomPion){
+        List<Koordinat> moves = possibleMoveOfPion(randomPion);
+        System.out.println("size: " + moves.size());
+        int randomIdx = new Random().nextInt(moves.size());
+        // System.out.println("random idx: " + randomIdx);
+        // System.out.println("size: " + moves.size());
+        try {
+            moves.get(randomIdx);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return moves.get(randomIdx);
     }
 }

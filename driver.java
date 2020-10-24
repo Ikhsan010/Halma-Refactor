@@ -25,7 +25,7 @@ public class driver {
 
         Player p = new Player(true);
         Player q = new Player(false);
-        Board b = new Board(4, p, q);
+        Board b = new Board(8, p, q);
         System.out.println("\nMenginisialisasi permainan");
 
         try {
