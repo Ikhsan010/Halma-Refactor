@@ -28,23 +28,23 @@ public class Koordinat{
         return this.y;
     }
 
-    /*
+    /**
     Setter absis koordinat
     @param x --> absis koordinat yang diganti
-    */
+    **/
     public void setAbsis(int x){
         this.x = x;
     }
 
-    /*
+    /**
     Setter ordinat koordinat
     @param y --> ordinat koordinat yang diganti
-    */
+    **/
     public void setOrdinat(String y){
         this.y = y;
     }
 
-    /*
+    /**
     Mengembalikan true jika this.koordinat = koordinat
     @param koordinat --> koordinat yang dibandingkan
     */
@@ -53,14 +53,14 @@ public class Koordinat{
         (this.getOrdinat().equalsIgnoreCase(koordinat.getOrdinat())));
     }
 
-    /*
+    /**
     Mencetak koordinat ke layar dengan format (absis, ordinat)
     */
     public void writeKoordinat(){
         System.out.printf("(%d, %s) ", this.getAbsis(), this.getOrdinat());
     }
 
-    /*
+    /**
     Mengembalikan koordinat hasil perpindahan this.koordinat ke UTARA
     @return --> Koordinat
     */
@@ -68,7 +68,7 @@ public class Koordinat{
         return new Koordinat(this.getAbsis()-1, this.getOrdinat());
     }
 
-    /*
+    /**
     Mengembalikan koordinat hasil perpindahan this.koordinat ke TIMUR LAUT
     @return --> Koordinat
     */
@@ -77,7 +77,7 @@ public class Koordinat{
         return new Koordinat(this.getAbsis()-1, Character.toString((char) (temp+1)));
     }
 
-    /*
+    /**
     Mengembalikan koordinat hasil perpindahan this.koordinat ke TIMUR
     @return --> Koordinat
     */
@@ -86,7 +86,7 @@ public class Koordinat{
         return new Koordinat(this.getAbsis(), Character.toString((char) (temp+1)));
     }
 
-    /*
+    /**
     Mengembalikan koordinat hasil perpindahan this.koordinat ke TENGGARA
     @return --> Koordinat
     */
@@ -95,7 +95,7 @@ public class Koordinat{
         return new Koordinat(this.getAbsis()+1, Character.toString((char) (temp+1)));
     }
 
-    /*
+    /**
     Mengembalikan koordinat hasil perpindahan this.koordinat ke SELATAN
     @return --> Koordinat
     */
@@ -103,7 +103,7 @@ public class Koordinat{
         return new Koordinat(this.getAbsis()+1, this.getOrdinat());
     }
 
-    /*
+    /**
     Mengembalikan koordinat hasil perpindahan this.koordinat ke BARAT DAYA
     @return --> Koordinat
     */
@@ -112,7 +112,7 @@ public class Koordinat{
         return new Koordinat(this.getAbsis()+1, Character.toString((char) (temp-1)));
     }
 
-    /*
+    /**
     Mengembalikan koordinat hasil perpindahan this.koordinat ke BARAT
     @return --> Koordinat
     */
@@ -121,7 +121,7 @@ public class Koordinat{
         return new Koordinat(this.getAbsis(), Character.toString((char) (temp-1)));
     }
 
-    /*
+    /**
     Mengembalikan koordinat hasil perpindahan this.koordinat ke BARAT LAUT
     @return --> Koordinat
     */

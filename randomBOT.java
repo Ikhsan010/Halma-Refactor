@@ -10,12 +10,14 @@ public class randomBOT {
         // It's actually effective iff the board size is small, e.g = 4
 
         // I don't know but there is still a bug when the board size >= 6
-        Board b = new Board(6, p, q);
+        Board b = new Board(Integer.parseInt(args[0]), p, q);
 
         Koordinat randomPion, randomDestinasi;
         int randomIdx;
         int iterateP1 = 0;
         int iterateP2 = 0;
+
+        randomPion = new Koordinat(5, "a");
 
         while(!b.getPlayer1().isWin(q) && !b.getPlayer2().isWin(p)){
             // b.writeInfo();
@@ -43,10 +45,16 @@ public class randomBOT {
             if(b.getPlayer1().getPlayerState()){
                 b.getPlayer1().setPlayerState(false);
                 b.getPlayer2().setPlayerState(true);
+                // System.out.println("Player 1 turn");
+                // randomPion.writeKoordinat(); System.out.println();
+                // b.writeInfo();
             }
             else{
                 b.getPlayer1().setPlayerState(true);
                 b.getPlayer2().setPlayerState(false);
+                // System.out.println("Player 2 turn");
+                // randomPion.writeKoordinat(); System.out.println();
+                // b.writeInfo();
             }
             // try{Thread.sleep(2000);} catch (Exception e) {e.printStackTrace();}
         }

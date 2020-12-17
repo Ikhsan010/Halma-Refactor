@@ -5,7 +5,7 @@ public enum Color {
 
     public final String color;
 
-    /*
+    /**
     Konstruktor pembentuk warna (pallete)
     @param color --> warna yang diinginkan
     */
@@ -13,7 +13,7 @@ public enum Color {
         this.color = color;
     }
 
-    /*
+    /**
     Getter warna yang dipilih
     @return --> warna yang dipilih
     */

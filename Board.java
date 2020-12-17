@@ -6,7 +6,7 @@ public class Board {
     private Player player1, player2;
     private List<ArrayList<String>> board;
 
-    /*
+    /**
     Konstruktor pembentuk Board (papan permainan)
     Terdiri dari 2 player, yaitu player1 dan player2
     @param size --> ukuran board yang dipilih (Asumsi selalu genap)
@@ -20,7 +20,7 @@ public class Board {
         initBoard(size);
     }
 
-    /*
+    /**
     Getter pemain satu
     @return --> this.player1
     */
@@ -28,7 +28,7 @@ public class Board {
         return this.player1;
     }
 
-    /*
+    /**
     Getter pemain dua
     @return --> this.player2
     */
@@ -36,9 +36,9 @@ public class Board {
         return this.player2;
     }
 
-    /*
+    /**
     Menginisiasi permainan: board, player1, player2
-    param: int size --> ukuran board
+    @param size --> ukuran board
     */
     public void initBoard(int size){
         int count = 1;
@@ -91,7 +91,7 @@ public class Board {
         }
     }
 
-    /*
+    /**
     Mencetak papan permainan halma ke layar
     */
     public void writeBoard(){
@@ -146,7 +146,7 @@ public class Board {
         }
     }
 
-    /*
+    /**
     Menampilkan informasi board dan pion pemain ke layar
     */
     public void writeInfo(){
@@ -157,10 +157,11 @@ public class Board {
         this.getPlayer2().writePlayerPion();
     }
 
-    /*
+    /**
     Return true jika destinasi yang dituju oleh pion masih
     berada di dalam board
-    param: Koordinat destinasi --> destinasi pion yang dituju
+    @param Koordinat destinasi --> destinasi pion yang dituju
+    @return boolean
     */
     public boolean isInsideBoard(Koordinat destinasi){
         int idx = 0;
@@ -175,11 +176,12 @@ public class Board {
         && (idx >= 1) && (idx < this.board.size()));
     }
 
-    /*
+    /**
     Mengembalikan true jika destinasi yang dituju pada koordinat pion saat
     ini merupakan destinasi yang terdefinisi dan valid
     @param pion --> koordinat pion yang dipilih (diasumsikan selalu valid)
     @param destinasi --> destinasi tujuan pion yang dituju
+    @return boolean
     */
     public boolean isValidMovement(Koordinat pion, Koordinat destinasi){
         return
@@ -188,7 +190,7 @@ public class Board {
         noPionAtDestinasi(destinasi));
     }
 
-    /*
+    /**
     Mengembalikan true jika koordinat destinasi yang dituju berjarak satu
     blok dari koordinat pion saat ini
     @param pion --> koordinat pion yang dipilih (diasumsikan selalu valid)
@@ -202,7 +204,7 @@ public class Board {
         pion.isMovingToWest(destinasi) || pion.isMovingToNorthWest(destinasi));
     }
 
-    /*
+    /**
     Mengembalikan true jika pion dapat menuju destinasi dengan cara melompati
     pion yang berada diantara koordinat pion dengan koordinat destinasi
     Ide: Cek apakah terdapat pion (sendiri atau musuh) yang berada diantara
@@ -244,12 +246,78 @@ public class Board {
     /**
     Mengembalikan true jika tidak ada pion pada koordinat destinasi
     @param destinasi --> koordinat destinasi yang akan dituju
-    **/
+    */
     public boolean noPionAtDestinasi(Koordinat destinasi){
         return
         (!this.getPlayer1().isPionExist(destinasi) &&
         !this.getPlayer2().isPionExist(destinasi));
     }
+
+    /**
+    Mengembalikan true jika pion sudah berada diluar koordinat
+    base sendiri
+    @param pion --> koordinat pion yang dipilih
+    @return boolean
+    */
+    public boolean isOutFromBase(Koordinat pion){
+        boolean found = false;
+        int i = 0;
+        if(this.getPlayer1().isPionExist(pion)){
+            while(!found && i<this.getPlayer1().getPlayerBase().size()){
+                if(pion.isKoordinatEQ(this.getPlayer1().getPlayerBase().get(i))){
+                    found = true;
+                }
+                else{
+                    i++;
+                }
+            }
+        }
+        if(this.getPlayer2().isPionExist(pion)){
+            while(!found && i<this.getPlayer2().getPlayerBase().size()){
+                if(pion.isKoordinatEQ(this.getPlayer2().getPlayerBase().get(i))){
+                    found = true;
+                }
+                else{
+                    i++;
+                }
+            }
+        }
+        return found;
+    }
+
+    public boolean isDestinasiBase(Koordinat pion, Koordinat destinasi){
+        boolean base = false;
+        int i = 0;
+        if(this.getPlayer1().isPionExist(pion)){
+            while(!base && i<this.getPlayer1().getPlayerBase().size()){
+                if(destinasi.isKoordinatEQ(this.getPlayer1().getPlayerBase().get(i))){
+                    base = true;
+                }
+                else{
+                    i++;
+                }
+            }
+        }
+        if(this.getPlayer2().isPionExist(pion)){
+            while(!base && i<this.getPlayer2().getPlayerBase().size()){
+                if(destinasi.isKoordinatEQ(this.getPlayer2().getPlayerBase().get(i))){
+                    base = true;
+                }
+                else{
+                    i++;
+                }
+            }
+        }
+        return base;
+    }
+
+    // public boolean wantToGoInsideBase(Koordinat pion, Koordinat destinasi){
+    //     if(isDestinasiBase(pion, destinasi)){
+    //         if(!isOutFromBase(pion)){
+                
+    //         }
+    //     }
+    // }
 
     /***** HEURISTIC APPROACH *****/
     // 1. Butuh fungsi yang dapat menentukan pion mana yang memiliki gerakan paling banyak
@@ -420,10 +488,10 @@ public class Board {
     /**
     @param randomPion --> pion yang dipilih untuk bergerak
     @return destinasi koordinat yang dituju
-    **/
+    */
     public Koordinat moveRandomly(Koordinat randomPion){
         List<Koordinat> moves = possibleMoveOfPion(randomPion);
-        System.out.println("size: " + moves.size());
+        // System.out.println("size: " + moves.size());
         int randomIdx = new Random().nextInt(moves.size());
         // System.out.println("random idx: " + randomIdx);
         // System.out.println("size: " + moves.size());

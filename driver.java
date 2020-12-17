@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class driver {
@@ -27,6 +28,11 @@ public class driver {
         Player q = new Player(false);
         Board b = new Board(8, p, q);
         System.out.println("\nMenginisialisasi permainan");
+
+        int randomIdx;
+        Koordinat randomPion = new Koordinat(5, "a");
+        Koordinat randomDestinasi;
+        int iterateP2 = 0;
 
         try {
             for (double progressPercentage = 0.0; progressPercentage < 1.0; progressPercentage += 0.01) {
@@ -69,30 +75,39 @@ public class driver {
             }
 
             // Player 2 main phase
+            // if(b.getPlayer2().getPlayerState()){
+            //     System.out.println("\nGiliran pemain kedua");
+            //     System.out.println("Masukkan koordinat pion ");
+            //     do {
+            //         absis = sc.nextInt();
+            //         ordinat = sc.next();
+            //         pion = new Koordinat(absis, ordinat);
+            //         if(!b.getPlayer2().isPionExist(pion)){
+            //             System.out.println("Pion tidak ditemukan!");
+            //             System.out.println("Masukkan koordinat pion yang baru");
+            //         }
+            //     } while (!b.getPlayer2().isPionExist(pion));
+            //     System.out.println("Masukkan koordinat tujuan");
+            //     int idxpion = b.getPlayer2().indexOfPion(pion);
+            //     do {
+            //         x = sc.nextInt();
+            //         y = sc.next();
+            //         destinasi = new Koordinat(x, y);
+            //         if(!b.isValidMovement(pion, destinasi)){
+            //             System.out.println("Destinasi tidak terdefinisi!");
+            //             System.out.println("Masukkan destinasi baru");
+            //         }
+            //     } while (!b.isValidMovement(pion, destinasi));
+            //     b.getPlayer2().getPlayerPion().set(idxpion, destinasi);
+            // }
             if(b.getPlayer2().getPlayerState()){
-                System.out.println("\nGiliran pemain kedua");
-                System.out.println("Masukkan koordinat pion ");
+                iterateP2++;
                 do {
-                    absis = sc.nextInt();
-                    ordinat = sc.next();
-                    pion = new Koordinat(absis, ordinat);
-                    if(!b.getPlayer2().isPionExist(pion)){
-                        System.out.println("Pion tidak ditemukan!");
-                        System.out.println("Masukkan koordinat pion yang baru");
-                    }
-                } while (!b.getPlayer2().isPionExist(pion));
-                System.out.println("Masukkan koordinat tujuan");
-                int idxpion = b.getPlayer2().indexOfPion(pion);
-                do {
-                    x = sc.nextInt();
-                    y = sc.next();
-                    destinasi = new Koordinat(x, y);
-                    if(!b.isValidMovement(pion, destinasi)){
-                        System.out.println("Destinasi tidak terdefinisi!");
-                        System.out.println("Masukkan destinasi baru");
-                    }
-                } while (!b.isValidMovement(pion, destinasi));
-                b.getPlayer2().getPlayerPion().set(idxpion, destinasi);
+                    randomIdx = new Random().nextInt(b.getPlayer2().getPlayerPion().size());
+                    randomPion = b.getPlayer2().getPlayerPion().get(randomIdx);
+                } while (!b.getPlayer2().isPionExist(randomPion));
+                randomDestinasi = b.moveRandomly(randomPion);
+                b.getPlayer2().getPlayerPion().set(randomIdx, randomDestinasi);
             }
 
             // Pergantian pemain

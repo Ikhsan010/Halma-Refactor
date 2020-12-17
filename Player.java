@@ -142,11 +142,12 @@ public class Player {
         return sama;
     }
 
-    /*
+    /**
     Mengembalikan index pion ditemukan pada list
     Jika pion tidak tersedia pada list maka return -1
     @param pion --> koordinat pion yang dicari di list dari this.player
-    */
+    @return boolean or -1
+    **/
     public int indexOfPion(Koordinat pion){
         boolean found = false;
         int i = 0;
